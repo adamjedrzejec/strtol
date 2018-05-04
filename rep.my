@@ -1,0 +1,127 @@
+base equals 10
+ in base 10 is base equals 10
+0
+strtol: Success
+String is not a number
+0 in base 16 is base equals 16
+0
+strtol: Success
+String is not a number
+1234 in base 10 is base equals 10
+0
+strtol: Success
+String is not a number
+1234 in base 10 is base equals 10
+0
+strtol: Success
+String is not a number
+-1234 in base 10 is base equals 10
+0
+strtol: Success
+String is not a number
+F in base 16 is base equals 16
+0
+strtol: Success
+String is not a number
+7FFFFFFE in base 16 is base equals 16
+0
+strtol: Success
+String is not a number
+7FFFFFFF in base 16 is base equals 16
+0
+strtol: Success
+String is not a number
+80000000 in base 16 is base equals 16
+0
+strtol: Success
+String is not a number
+-80000001 in base 16 is base equals 16
+0
+strtol: Success
+String is not a number
+-80000000 in base 16 is base equals 16
+0
+strtol: Success
+String is not a number
+-7FFFFFFF in base 16 is base equals 16
+0
+strtol: Success
+String is not a number
+-7FFFFFFE in base 16 is base equals 16
+0
+strtol: Success
+String is not a number
+ZIK0ZJ in base 36 is 0
+strtol: Success
+String is not a number
+ZIK0ZK in base 36 is 0
+strtol: Success
+String is not a number
+-ZIK0ZJ in base 36 is 0
+strtol: Success
+String is not a number
+-ZIK0ZK in base 36 is 0
+strtol: Success
+String is not a number
+-ZIK0ZL in base 36 is 0
+strtol: Success
+String is not a number
+ 	
+ -0x234 in base 16 is base equals 16
+0
+strtol: Success
+String is not a number
+ 	
+ +128 in base 0 is 0
+strtol: Success
+String is not a number
+ 	
+ + 128 in base 0 is 0
+strtol: Success
+String is not a number
+-0x7FFFFFFE in base 0 is 0
+strtol: Success
+String is not a number
+-0x7FFFFFFEEEEEEEEEEE??? in base 0 is 0
+strtol: Success
+String is not a number
+-0xZZZZZZZZZZZZZZZZ??? in base 36 is 0
+strtol: Success
+String is not a number
+-#$#$ in base 36 is 0
+strtol: Success
+String is not a number
+-#$#$ in base 40 is 0
+strtol: Invalid argument
+String is not a number
+10 in base 40 is 0
+strtol: Invalid argument
+String is not a number
+10 in base 1 is 0
+strtol: Invalid argument
+String is not a number
+0 in base 1 is 0
+strtol: Invalid argument
+String is not a number
+0 in base -1 is 0
+strtol: Invalid argument
+String is not a number
+-071 in base 0 is 0
+strtol: Success
+String is not a number
+-0xr in base 0 is 0
+strtol: Success
+String is not a number
+-0xr in base 16 is base equals 16
+0
+strtol: Success
+String is not a number
+-0r in base 0 is 0
+strtol: Success
+String is not a number
+-08 in base 0 is 0
+strtol: Success
+String is not a number
+21474836481 in base 0 is 0
+strtol: Success
+String is not a number

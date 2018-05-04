@@ -7,13 +7,13 @@ long strtol (const char *nPtr, char **endPtr, int base)
   errno = 0; /* if no error will occur, errno will not change */
   long number = 0; // WHEN FINISHED, DELETE '= 0' !!!!!!!!!!
   const char *actualPosition;
-  enum sign {POSITIVE, NEGATIVE};
+  enum signs {POSITIVE, NEGATIVE}; /* available signs */
+  int sign;
 
   actualPosition = nPtr;
 
   /* Invalid argument */
-  if (!((base >= 2 && base <= 36) || base == 0))
-  {
+  if (!((base >= 2 && base <= 36) || base == 0)){
     errno = EINVAL;
     return 0;
   }
@@ -22,6 +22,7 @@ long strtol (const char *nPtr, char **endPtr, int base)
   while (isspace(*actualPosition))
     actualPosition++;
 
+  /* sign checker */
   if (*actualPosition == '+'){
     sign = POSITIVE;
     actualPosition++;
@@ -32,9 +33,9 @@ long strtol (const char *nPtr, char **endPtr, int base)
     sign = POSITIVE; /* if first non-blank character is not '+' nor '-', then we assume the number as a positive value, even though string may not be a number */
 
   if (base == 10){
-    printf("xx\n");
+    printf("base equals 10\n");
   }else if (base == 16){
-    printf("xxx\n");
+    printf("base equals 16\n");
   }
 
 
