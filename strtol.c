@@ -76,8 +76,15 @@ long strtol (const char *nPtr, char **endPtr, int base)
   }
 
 
+
+
+
+
+  /////TO WORK PROPERLY, IT NEEDS TO CHECK IF EACH INPUT IS PROPER TO THE BASE
   if (base == 10){
-    printf("base equals 10\n");
+    while (isdigit(*actualPosition) && *actualPosition != '\0')
+      actualPosition++;
+    *endPtr = (char *) actualPosition;
   }else if (base == 8){
     printf("base equals 8\n");
   }else if (base == 16){
@@ -85,7 +92,11 @@ long strtol (const char *nPtr, char **endPtr, int base)
   }
 
 
-        /////////  *endPtr = (char *) actualPosition;
+
+
+
+
+        ////END POINTER SETTER:    *endPtr = (char *) actualPosition;
 
 
   return number;
