@@ -47,25 +47,33 @@ long strtol (const char *nPtr, char **endPtr, int base)
         actualPosition++;
         if (*actualPosition >= '0' || *actualPosition <= '7')
           base = 8;
-        else
+        else{
+          *endPtr = (char *) ++positionBeforeBaseDetection;
           return 0;
+        }
       }
       else if (*actualPosition == 'x' || *actualPosition == 'X'){ /* we assume that hexadecimal system is written in '0x...' or '0X...' way */
         actualPosition++;
         if (isdigit(*actualPosition) || ((*actualPosition >= 'A') && (*actualPosition <= 'F')))
           base = 16;
-        else
+        else{
+          *endPtr = (char *) ++positionBeforeBaseDetection;
           return 0;
+        }
       }
-      else
+      else{
         base = 10;
+        if (!isdigit(*actualPosition)){
+          *endPtr = (char *) actualPosition;
+          return 0;
+        }
+      }
     }else /* this condition contains: actualPosition is a digit and that digit is not 0 */
       base = 10;
 
     actualPosition = positionBeforeBaseDetection;
 
   }
-
 
 
   if (base == 10){
@@ -77,14 +85,7 @@ long strtol (const char *nPtr, char **endPtr, int base)
   }
 
 
-
         /////////  *endPtr = (char *) actualPosition;
-
-
-
-
-
-
 
 
   return number;

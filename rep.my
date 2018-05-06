@@ -115,15 +115,14 @@ strtol: Success
 String is not a number
 -0xr in base 0 is 0
 strtol: Success
-String is not a number
+End pointer points to "xr"
 -0xr in base 16 is base equals 16
 0
 strtol: Success
 String is not a number
--0r in base 0 is base equals 10
-0
+-0r in base 0 is 0
 strtol: Success
-String is not a number
+End pointer points to "r"
 -08 in base 0 is base equals 10
 0
 strtol: Success
