@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 long strtol (const char *nPtr, char **endPtr, int base)
 {
@@ -9,6 +10,12 @@ long strtol (const char *nPtr, char **endPtr, int base)
   const char *actualPosition;
   enum signs {POSITIVE, NEGATIVE}; /* available signs */
   int sign;
+
+  if (endPtr == NULL){ /* !!!MANDATORY PART!!! if user of the function gives us the endPtr pointer with a NULL address */
+    free(endPtr);
+    endPtr = malloc(sizeof(char **));
+    *endPtr = (char *) nPtr; /* there could be anything instead of '(char *) nPtr' like '0' */
+  }
 
   actualPosition = nPtr;
 
@@ -56,22 +63,18 @@ long strtol (const char *nPtr, char **endPtr, int base)
         actualPosition++;
         if (isdigit(*actualPosition) || ((*actualPosition >= 'A') && (*actualPosition <= 'F')))
           base = 16;
-        else{
-          *endPtr = (char *) ++positionBeforeBaseDetection;
-          return 0;
-        }
+        else
+          base = 10;
       }
-      else{
+      else
         base = 10;
-        if (!isdigit(*actualPosition)){
-          *endPtr = (char *) actualPosition;
-          return 0;
-        }
-      }
     }else /* this condition contains: actualPosition is a digit and that digit is not 0 */
       base = 10;
 
-    actualPosition = positionBeforeBaseDetection;
+    if (base == 10)
+      actualPosition = positionBeforeBaseDetection;
+    else if (base == 8 || base == 16)
+      actualPosition = positionBeforeBaseDetection + 2;
 
   }
 
@@ -85,15 +88,26 @@ long strtol (const char *nPtr, char **endPtr, int base)
     while (isdigit(*actualPosition) && *actualPosition != '\0')
       actualPosition++;
     *endPtr = (char *) actualPosition;
+    //printf("\t\t\tendPtr:%s\n", (char *) *endPtr); /////////////////TEST
   }else if (base == 8){
-    printf("base equals 8\n");
+    if (*actualPosition == '0'){
+      actualPosition++;
+      if (*actualPosition == 'o' || *actualPosition == 'O')
+        actualPosition++;
+    }
+    while (*actualPosition >= '0' && *actualPosition <= '7')
+      actualPosition++;
+    *endPtr = (char *) actualPosition;
   }else if (base == 16){
-    printf("base equals 16\n");
+    if (*actualPosition == '0'){
+      actualPosition++;
+      if (*actualPosition == 'x' || *actualPosition == 'X')
+        actualPosition++;
+    }
+    while (isdigit(*actualPosition) || (*actualPosition >= 'A' && *actualPosition <= 'F'))
+      actualPosition++;
+    *endPtr = (char *) actualPosition;
   }
-
-
-
-
 
 
         ////END POINTER SETTER:    *endPtr = (char *) actualPosition;
