@@ -2,14 +2,18 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <limits.h>
+#include <stdbool.h>
 
 long strtol (const char *nPtr, char **endPtr, int base)
 {
   errno = 0; /* if no error will occur, errno will not change */
   long number = 0; // WHEN FINISHED, DELETE '= 0' !!!!!!!!!!
   const char *actualPosition;
-  enum signs {POSITIVE, NEGATIVE}; /* available signs */
-  int sign;
+  enum signs {NEGATIVE, POSITIVE}; /* available signs */
+  int sign, cutlim, currentdigit;
+  unsigned long cutoff;
+  bool correctconversion = true;
 
   if (endPtr == NULL){ /* !!!MANDATORY PART!!! if user of the function gives us the endPtr pointer with a NULL address */
     free(endPtr);
@@ -111,12 +115,76 @@ long strtol (const char *nPtr, char **endPtr, int base)
         actualPosition++;
       *endPtr = (char *) actualPosition;
     }else{ /* bases between 11 and 36 inclusive */
+      if (*actualPosition == '0'){
+        actualPosition++;
+        if (*actualPosition == 'x')
+          actualPosition++;
+      }
       while (isdigit(*actualPosition) || (*actualPosition >= 'A' && *actualPosition <= ('A' - 11 + base)))
         actualPosition++;
       *endPtr = (char *) actualPosition;
     }
   }
         ////END POINTER SETTER:    *endPtr = (char *) actualPosition;
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  if (sign == POSITIVE)
+    cutoff = LONG_MAX / (unsigned long) base;
+  else
+    cutoff = (unsigned long) LONG_MIN / (unsigned long) base;
+
+  cutlim = cutoff % (unsigned long) base;
+
+
+
+
+  actualPosition = nPtr;
+
+
+  while ((char *) actualPosition < *endPtr) {
+    if (isdigit(* actualPosition))
+      currentdigit = * actualPosition - '0'; //converting to the actual integer
+    else {
+      if (isalpha(* actualPosition)) {
+        if (islower(* actualPosition) && (* actualPosition - 'a') + 10 < base)
+          currentdigit = (* actualPosition - 'a') + 10;
+        else if (!islower(* actualPosition) && (* actualPosition - 'A') + 10 < base)
+                  currentdigit = (* actualPosition - 'A') + 10;
+              else
+                  break;
+      } else
+        break;
+    }
+    if (!correctconversion ||
+          number > cutoff ||
+          (number == cutoff && (int) currentdigit > cutlim)) {
+        correctconversion = false;
+        actualPosition++;
+    } else { //the actual conversion to decimal
+      correctconversion = true;
+      number = (number * base) + currentdigit;
+      actualPosition++;
+    }
+  }
+  if (!correctconversion) {
+    if (sign == POSITIVE)
+      number = LONG_MAX;
+    else
+      number = LONG_MIN;
+    errno = ERANGE;
+}
+
+
+  if (sign == NEGATIVE)
+  number *= -1;
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
   return number;
