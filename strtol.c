@@ -40,6 +40,7 @@ long strtol (const char *nPtr, char **endPtr, int base)
     sign = POSITIVE; /* if first non-blank character is not '+' nor '-', then we assume the number as a positive value, even though string may not be a number */
 
 
+
   /* detection what is the base */
   if (base == 0){
     const char *positionBeforeBaseDetection;
@@ -75,10 +76,7 @@ long strtol (const char *nPtr, char **endPtr, int base)
       actualPosition = positionBeforeBaseDetection;
     else if (base == 8 || base == 16)
       actualPosition = positionBeforeBaseDetection + 2;
-
   }
-
-
 
 
 
@@ -107,9 +105,17 @@ long strtol (const char *nPtr, char **endPtr, int base)
     while (isdigit(*actualPosition) || (*actualPosition >= 'A' && *actualPosition <= 'F'))
       actualPosition++;
     *endPtr = (char *) actualPosition;
+  }else{ /* we are sure that there goes every base between 2 and 36 except 8, 10 and 16 */
+    if (base <= 10){ /* cause 9 is 10th digit in ASCII */
+      while (*actualPosition >= '0' && *actualPosition <= ('0' - 1 + base))
+        actualPosition++;
+      *endPtr = (char *) actualPosition;
+    }else{ /* bases between 11 and 36 inclusive */
+      while (isdigit(*actualPosition) || (*actualPosition >= 'A' && *actualPosition <= ('A' - 11 + base)))
+        actualPosition++;
+      *endPtr = (char *) actualPosition;
+    }
   }
-
-
         ////END POINTER SETTER:    *endPtr = (char *) actualPosition;
 
 
