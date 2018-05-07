@@ -70,10 +70,19 @@ long strtol (const char *nPtr, char **endPtr, int base)
         if (isdigit(*actualPosition) || ((*actualPosition >= 'A') && (*actualPosition <= 'F')))
           base = 16;
         else
-          base = 10;
+          *endPtr = (char *) ++positionBeforeBaseDetection;
+          return 0;
       }
-      else
-        base = 10;
+      else if (*actualPosition >= '0' && *actualPosition <= '7'){
+        actualPosition++;
+        while (*actualPosition >= '0' && *actualPosition <= '7' && *actualPosition != '\0'){
+          actualPosition++;
+        }
+        if (*actualPosition != '\0' && ((*actualPosition >= '0' && *actualPosition <= '9') || (*actualPosition >= 'A' && *actualPosition <= 'F')))
+          base = 16;
+        else if (!isdigit(*actualPosition) || *actualPosition == '\0')
+          base = 8;
+      }
     }else /* this condition contains: actualPosition is a digit and that digit is not 0 */
       base = 10;
 
