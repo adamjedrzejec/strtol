@@ -43,7 +43,8 @@ long strtol (const char *nPtr, char **endPtr, int base)
   }else
     sign = POSITIVE; /* if first non-blank character is not '+' nor '-', then we assume the number as a positive value, even though string may not be a number */
 
-
+  if (!isalnum(*actualPosition))
+    return 0;
 
   /* detection what is the base */
   if (base == 0){
@@ -80,6 +81,9 @@ long strtol (const char *nPtr, char **endPtr, int base)
       actualPosition = positionBeforeBaseDetection;
     else if (base == 8 || base == 16)
       actualPosition = positionBeforeBaseDetection + 2;
+
+
+    nPtr = actualPosition;
   }
 
 
@@ -129,7 +133,6 @@ long strtol (const char *nPtr, char **endPtr, int base)
 
 
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   if (sign == POSITIVE)
@@ -137,7 +140,7 @@ long strtol (const char *nPtr, char **endPtr, int base)
   else
     cutoff = (unsigned long) LONG_MIN / (unsigned long) base;
 
-  cutlim = cutoff % (unsigned long) base;
+  cutlim = LONG_MAX % (unsigned long) base;
 
 
 
@@ -146,22 +149,15 @@ long strtol (const char *nPtr, char **endPtr, int base)
 
 
   while ((char *) actualPosition < *endPtr) {
-    if (isdigit(* actualPosition))
+    //printf("\n%c", *actualPosition);
+    if (isalnum(* actualPosition) && isdigit(* actualPosition))
       currentdigit = * actualPosition - '0'; //converting to the actual integer
-    else {
-      if (isalpha(* actualPosition)) {
-        if (islower(* actualPosition) && (* actualPosition - 'a') + 10 < base)
-          currentdigit = (* actualPosition - 'a') + 10;
-        else if (!islower(* actualPosition) && (* actualPosition - 'A') + 10 < base)
-                  currentdigit = (* actualPosition - 'A') + 10;
-              else
-                  break;
-      } else
-        break;
-    }
-    if (!correctconversion ||
-          number > cutoff ||
-          (number == cutoff && (int) currentdigit > cutlim)) {
+    else if (isalnum(* actualPosition) && isupper(* actualPosition))
+      currentdigit = (* actualPosition - 'A') + 10;
+    else
+      currentdigit = 0;
+
+    if (!correctconversion || number > cutoff || (number == cutoff && (int) currentdigit > cutlim)) {
         correctconversion = false;
         actualPosition++;
     } else { //the actual conversion to decimal
@@ -170,6 +166,8 @@ long strtol (const char *nPtr, char **endPtr, int base)
       actualPosition++;
     }
   }
+
+
   if (!correctconversion) {
     if (sign == POSITIVE)
       number = LONG_MAX;
