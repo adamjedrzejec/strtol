@@ -167,6 +167,11 @@ long strtol (const char *nPtr, char **endPtr, int base)
     }
   }
 
+  //printf("\n\nN1=%ld\n", number);
+
+  //printf("correctconversion=%d\n", correctconversion);
+
+  //printf("base=%d\n", base);
 
   if (!correctconversion) {
     if (sign == POSITIVE)
@@ -180,7 +185,7 @@ long strtol (const char *nPtr, char **endPtr, int base)
   if (sign == NEGATIVE)
   number *= -1;
 
-
+  //printf("N2=%ld\n\n", number);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
