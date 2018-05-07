@@ -56,43 +56,28 @@ long strtol (const char *nPtr, char **endPtr, int base)
     else if (*actualPosition == '0')
     {
       actualPosition++;
-      if (*actualPosition == 'o' || *actualPosition == 'O'){ /* we assume that octal system is written in '0o...' or '0O...' way */
+      if (*actualPosition == 'x'){
+        base = 16;
         actualPosition++;
-        if (*actualPosition >= '0' || *actualPosition <= '7')
-          base = 8;
-        else{
-          *endPtr = (char *) ++positionBeforeBaseDetection;
-          return 0;
-        }
       }
-      else if (*actualPosition == 'x' || *actualPosition == 'X'){ /* we assume that hexadecimal system is written in '0x...' or '0X...' way */
-        actualPosition++;
-        if (isdigit(*actualPosition) || ((*actualPosition >= 'A') && (*actualPosition <= 'F')))
-          base = 16;
-        else
-          *endPtr = (char *) ++positionBeforeBaseDetection;
-          return 0;
-      }
-      else if (*actualPosition >= '0' && *actualPosition <= '7'){
-        actualPosition++;
-        while (*actualPosition >= '0' && *actualPosition <= '7' && *actualPosition != '\0'){
+      if (*actualPosition >= '0' && *actualPosition <= '7' && base == 0){
+        while (*actualPosition >= '0' && *actualPosition <= '7')
           actualPosition++;
-        }
-        if (*actualPosition != '\0' && ((*actualPosition >= '0' && *actualPosition <= '9') || (*actualPosition >= 'A' && *actualPosition <= 'F')))
-          base = 16;
-        else if (!isdigit(*actualPosition) || *actualPosition == '\0')
+        if (*actualPosition == '\0'){
           base = 8;
+          actualPosition = positionBeforeBaseDetection;
+        }
+        else if ((*actualPosition >= '0' && *actualPosition <= '9') || (*actualPosition >= 'A' && *actualPosition <= 'F')){
+          base = 16;
+          actualPosition = positionBeforeBaseDetection;
+        }
       }
-    }else /* this condition contains: actualPosition is a digit and that digit is not 0 */
+    }else if (*actualPosition >= '1' && *actualPosition <= '9')
       base = 10;
-
-    if (base == 10)
-      actualPosition = positionBeforeBaseDetection;
-    else if (base == 8 || base == 16)
-      actualPosition = positionBeforeBaseDetection + 2;
 
 
     nPtr = actualPosition;
+
   }
 
 
@@ -105,11 +90,6 @@ long strtol (const char *nPtr, char **endPtr, int base)
     *endPtr = (char *) actualPosition;
     //printf("\t\t\tendPtr:%s\n", (char *) *endPtr); /////////////////TEST
   }else if (base == 8){
-    if (*actualPosition == '0'){
-      actualPosition++;
-      if (*actualPosition == 'o' || *actualPosition == 'O')
-        actualPosition++;
-    }
     while (*actualPosition >= '0' && *actualPosition <= '7')
       actualPosition++;
     *endPtr = (char *) actualPosition;
@@ -119,7 +99,7 @@ long strtol (const char *nPtr, char **endPtr, int base)
       if (*actualPosition == 'x' || *actualPosition == 'X')
         actualPosition++;
     }
-    while (isdigit(*actualPosition) || (*actualPosition >= 'A' && *actualPosition <= 'F'))
+    while ((*actualPosition >= '0' && *actualPosition <= '9') || (*actualPosition >= 'A' && *actualPosition <= 'F'))
       actualPosition++;
     *endPtr = (char *) actualPosition;
   }else{ /* we are sure that there goes every base between 2 and 36 except 8, 10 and 16 */
@@ -144,7 +124,7 @@ long strtol (const char *nPtr, char **endPtr, int base)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  if (sign == POSITIVE)
+  /*if (sign == POSITIVE)
     cutoff = LONG_MAX / (unsigned long) base;
   else
     cutoff = (unsigned long) LONG_MIN / (unsigned long) base;
@@ -194,7 +174,7 @@ long strtol (const char *nPtr, char **endPtr, int base)
   if (sign == NEGATIVE)
   number *= -1;
 
-  //printf("N2=%ld\n\n", number);
+  //printf("N2=%ld\n\n", number);*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
