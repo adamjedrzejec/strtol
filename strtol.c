@@ -127,7 +127,8 @@ long strtol (const char *nPtr, char **endPtr, int base)
 
         ////END POINTER SETTER:    *endPtr = (char *) actualPosition;
 
-
+if (base == 0)
+  printf("EWELINA TY KURWOOOOOOOOOOOOOOOOO");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -137,9 +138,9 @@ long strtol (const char *nPtr, char **endPtr, int base)
     cutoff = (unsigned long) LONG_MIN / (unsigned long) base;
 
   cutlim = LONG_MAX % (unsigned long) base;
+*/
 
-
-
+/*
 
   actualPosition = nPtr;
 

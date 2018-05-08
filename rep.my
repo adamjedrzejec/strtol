@@ -100,10 +100,10 @@ End pointer points to "xr"
 -0xr in base 16 is 0
 strtol: Success
 End pointer points to "xr"
--0r in base 0 is 0
+-0r in base 0 is EWELINA TY KURWOOOOOOOOOOOOOOOOO0
 strtol: Success
 End pointer points to "r"
--08 in base 0 is 0
+-08 in base 0 is EWELINA TY KURWOOOOOOOOOOOOOOOOO0
 strtol: Success
 End pointer points to "8"
 21474836481 in base 0 is 0
