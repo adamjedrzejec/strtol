@@ -3,7 +3,7 @@ strtol: Success
 String is not a number
 0 in base 16 is 0
 strtol: Success
-End pointer points to ""
+String is not a number
 1234 in base 10 is 0
 strtol: Success
 End pointer points to ""
@@ -96,10 +96,10 @@ strtol: Success
 End pointer points to ""
 -0xr in base 0 is 0
 strtol: Success
-End pointer points to "r"
+End pointer points to "xr"
 -0xr in base 16 is 0
 strtol: Success
-End pointer points to "r"
+End pointer points to "xr"
 -0r in base 0 is 0
 strtol: Success
 End pointer points to "r"

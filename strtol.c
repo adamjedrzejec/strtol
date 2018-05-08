@@ -99,8 +99,11 @@ long strtol (const char *nPtr, char **endPtr, int base)
       if (*actualPosition == 'x' || *actualPosition == 'X')
         actualPosition++;
     }
-    while ((*actualPosition >= '0' && *actualPosition <= '9') || (*actualPosition >= 'A' && *actualPosition <= 'F'))
-      actualPosition++;
+    if ((*actualPosition >= '0' && *actualPosition <= '9') || (*actualPosition >= 'A' && *actualPosition <= 'F')){
+      while ((*actualPosition >= '0' && *actualPosition <= '9') || (*actualPosition >= 'A' && *actualPosition <= 'F'))
+        actualPosition++;
+    }else
+      actualPosition--;
     *endPtr = (char *) actualPosition;
   }else{ /* we are sure that there goes every base between 2 and 36 except 8, 10 and 16 */
     if (base <= 10){ /* cause 9 is 10th digit in ASCII */
@@ -113,11 +116,15 @@ long strtol (const char *nPtr, char **endPtr, int base)
         if (*actualPosition == 'x')
           actualPosition++;
       }
-      while (isdigit(*actualPosition) || (*actualPosition >= 'A' && *actualPosition <= ('A' - 11 + base)))
-        actualPosition++;
+      if (isdigit(*actualPosition) || (*actualPosition >= 'A' && *actualPosition <= ('A' - 11 + base))){
+        while (isdigit(*actualPosition) || (*actualPosition >= 'A' && *actualPosition <= ('A' - 11 + base)))
+          actualPosition++;
+      }else
+        actualPosition--;
       *endPtr = (char *) actualPosition;
     }
   }
+
         ////END POINTER SETTER:    *endPtr = (char *) actualPosition;
 
 
