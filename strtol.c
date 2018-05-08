@@ -75,9 +75,7 @@ long strtol (const char *nPtr, char **endPtr, int base)
     }else if (*actualPosition >= '1' && *actualPosition <= '9')
       base = 10;
 
-
     nPtr = actualPosition;
-
   }
 
 
@@ -88,7 +86,6 @@ long strtol (const char *nPtr, char **endPtr, int base)
     while (isdigit(*actualPosition) && *actualPosition != '\0')
       actualPosition++;
     *endPtr = (char *) actualPosition;
-    //printf("\t\t\tendPtr:%s\n", (char *) *endPtr); /////////////////TEST
   }else if (base == 8){
     while (*actualPosition >= '0' && *actualPosition <= '7')
       actualPosition++;
@@ -96,12 +93,14 @@ long strtol (const char *nPtr, char **endPtr, int base)
   }else if (base == 16){
     if (*actualPosition == '0'){
       actualPosition++;
-      if (*actualPosition == 'x' || *actualPosition == 'X')
+      if (*actualPosition == 'x')
         actualPosition++;
     }
     if ((*actualPosition >= '0' && *actualPosition <= '9') || (*actualPosition >= 'A' && *actualPosition <= 'F')){
       while ((*actualPosition >= '0' && *actualPosition <= '9') || (*actualPosition >= 'A' && *actualPosition <= 'F'))
         actualPosition++;
+    }else if (*actualPosition == '\0'){
+      *endPtr = (char *) actualPosition;
     }else
       actualPosition--;
     *endPtr = (char *) actualPosition;
@@ -125,28 +124,22 @@ long strtol (const char *nPtr, char **endPtr, int base)
     }
   }
 
-        ////END POINTER SETTER:    *endPtr = (char *) actualPosition;
 
 if (base == 0)
-  printf("EWELINA TY KURWOOOOOOOOOOOOOOOOO");
+  return 0;
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  /*if (sign == POSITIVE)
+  if (sign == POSITIVE)
     cutoff = LONG_MAX / (unsigned long) base;
   else
     cutoff = (unsigned long) LONG_MIN / (unsigned long) base;
 
   cutlim = LONG_MAX % (unsigned long) base;
-*/
 
-/*
 
   actualPosition = nPtr;
 
-
   while ((char *) actualPosition < *endPtr) {
-    //printf("\n%c", *actualPosition);
     if (isalnum(* actualPosition) && isdigit(* actualPosition))
       currentdigit = * actualPosition - '0'; //converting to the actual integer
     else if (isalnum(* actualPosition) && isupper(* actualPosition))
@@ -164,12 +157,6 @@ if (base == 0)
     }
   }
 
-  //printf("\n\nN1=%ld\n", number);
-
-  //printf("correctconversion=%d\n", correctconversion);
-
-  //printf("base=%d\n", base);
-
   if (!correctconversion) {
     if (sign == POSITIVE)
       number = LONG_MAX;
@@ -178,14 +165,8 @@ if (base == 0)
     errno = ERANGE;
 }
 
-
   if (sign == NEGATIVE)
   number *= -1;
-
-  //printf("N2=%ld\n\n", number);*/
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
   return number;
 }
